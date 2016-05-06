@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="stylesheets/semantic.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="stylesheets/style.css" media="screen" title="no title" charset="utf-8">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js" charset="utf-8"></script>
+    <script src="javascripts/semantic.js" charset="utf-8"></script>
+    <style>
+    a{
+    color:#529FD1
+    }
+    </style>
+    <title></title>
+  </head>
+  <body class="home">
+    <div class="home_menu">
+    <img src="./images/logo1.png">
+    <div class="ui three cards autumn leaf transition hidden">
+      <a class="card" href="/room">
+        <div class="image center aligned ">
+          <i class="cubes massive  icon"></i>
+        </div>
+        <div class="extra center aligned" >
+          房间管理
+        </div>
+      </a>
+      <a class="card" href="/consume">
+        <div class="image center aligned">
+          <i class="money massive  icon"></i>
+        </div>
+        <div class="extra center aligned">
+          消费记录管理
+        </div>
+      </a>
+      <a class="card" href="/recharge">
+        <div class="image center aligned">
+          <i class="dollar massive  icon"></i>
+        </div>
+        <div class="extra center aligned">
+          充值管理
+        </div>
+      </a>
+      <a class="card" href="/vip">
+        <div class="image center aligned">
+          <i class="users massive  icon"></i>
+        </div>
+        <div class="extra center aligned">
+          会员管理
+        </div>
+      </a>
+      <a class="card" href="/price">
+        <div class="image center aligned">
+          <i class=" yen massive  icon"></i>
+        </div>
+        <div class="extra center aligned">
+          价格管理
+        </div>
+      </a>
+      <a class="card ">
+        <div class="image center aligned">
+          <i class="spinner massive  icon"></i>
+        </div>
+        <div class="extra center aligned">
+          新功能添加中
+        </div>
+      </a>
+    </div>
+    </div>
+    <script type="text/javascript">
+      $(function(){
+        $(".card").css({"background-color":"grey","box-shadow":"none"});
+        $('.autumn.leaf')
+        .transition('horizontal flip');
+      })
+    </script>
+  </body>
+</html>

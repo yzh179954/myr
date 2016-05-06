@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="stylesheets/semantic.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="stylesheets/style.css" media="screen" title="no title" charset="utf-8">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js" charset="utf-8"></script>
+    <script src="javascripts/semantic.js" charset="utf-8"></script>
+    <title><%=title%></title>
+  </head>
+  <body class="home">
+    <div class="">
+      <img src="./images/logo1.png">
+    <div class="ui  attached menu">
+      <div class="ui steps" style="margin-bottom:0px;">
+        <a class=" step" href="/">
+          <i class="home icon"></i>
+          <div class="content">
+            返回主页
+          </div>
+        </a>
+        <div class="active step">
+          <i class="yen massive  icon"></i>
+          <div class="content">
+            价格管理
+          </div>
+        </div>
+      </div>
+      <div class="right menu">
+        <div class="ui right aligned category search item">
+          <div class="ui action input">
+            <button class="ui green button new_price">添加价格</button>
+          </div>
+        </div>
+      </div>
+    </div>
+      <table class="ui celled table" style="margin-top:0px;border:0px;">
+        <thead>
+          <tr>
+            <th>序号</th>
+            <th>时间段</th>
+            <th>价格</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% result.forEach(function(price){%>
+            <tr>
+              <td><%=price.id%></td>
+              <td><%=price.timearea%></td>
+              <td><%=price.price%></td>
+              <td>
+                <button class="ui button red del_price" id="<%=price.id%>">删除</button>
+              </td>
+            </tr>
+            <%})%>
+        </tbody>
+      </table>
+    </div>
+    <!--添加模态对话框 -->
+    <div class="ui small modal new">
+      <i class="close icon"></i>
+      <div class="content">
+        <form class="ui form" method="post" action="/price/new">
+          <div class="ui form">
+            <div class="fields">
+              <div class="field">
+                <label>开始时间</label>
+                <select name="begin_time">
+                  <option value="00">00</option>
+                  <option value="01">01</option>
+                  <option value="02">02</option>
+                  <option value="03">03</option>
+                  <option value="04">04</option>
+                  <option value="05">05</option>
+                  <option value="06">06</option>
+                  <option value="07">07</option>
+                  <option value="08">08</option>
+                  <option value="09">09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+              </select>
+              </div>
+              <div class="field">
+                <label>结束时间</label>
+                <select name="end_time">
+                  <option value="00">00</option>
+                  <option value="01">01</option>
+                  <option value="02">02</option>
+                  <option value="03">03</option>
+                  <option value="04">04</option>
+                  <option value="05">05</option>
+                  <option value="06">06</option>
+                  <option value="07">07</option>
+                  <option value="08">08</option>
+                  <option value="09">09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+              </select>
+              </div>
+              <div class="field">
+                <label>价格</label>
+                <input type="text" name="price" value=0>
+              </div>
+            </div>
+            <button class="ui blue button" type="submit">提交</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="ui small modal del">
+      <div class="content">
+        确定删除该时间价格信息?删除后不可恢复
+      </div>
+      <div class="actions">
+          <div class="ui negative button">取消</div>
+          <div class="ui positive button">确定</div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      $(function(){
+        $(".new_price").click(function(){
+          $('.small.modal.new').modal('setting', 'closable', false).modal('show');
+        })
+        $(".del_price").click(function(){
+          var keyword=$(this).attr("id");
+          $('.small.modal.del').modal({
+            closable  : false,
+            onApprove : function(){
+              window.location.href="/price/del/"+keyword;
+            }
+          }).modal('show');
+        });
+      })
+
+    </script>
+  </body>
+</html>

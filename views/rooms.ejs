@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="stylesheets/semantic.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="stylesheets/style.css" media="screen" title="no title" charset="utf-8">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js" charset="utf-8"></script>
+    <script src="javascripts/semantic.js" charset="utf-8"></script>
+    <script src="javascripts/timeutil.js" charset="utf-8"></script>
+    <title><%=title%></title>
+  </head>
+  <body class="home">
+    <div class="">
+      <img src="./images/logo1.png">
+    <div class="ui  attached menu">
+      <div class="ui steps" style="margin-bottom:0px;">
+        <a class=" step" href="/">
+          <i class="home icon"></i>
+          <div class="content">
+            返回主页
+          </div>
+        </a>
+        <div class="active step">
+          <i class="cubes massive  icon"></i>
+          <div class="content">
+            房间管理
+          </div>
+        </div>
+      </div>
+      <div class="right menu">
+        <div class="ui right aligned category search item">
+          <div class="ui action input">
+            <button class="ui green button new_room">添加房间</button>
+          </div>
+        </div>
+      </div>
+    </div>
+      <table class="ui celled table" style="margin-top:0px;border:0px;">
+        <thead>
+          <tr>
+            <th>序号</th>
+            <th>房间编号</th>
+            <th>房间使用状态</th>
+            <th>开始时间</th>
+            <th>已使用时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% result.forEach(function(room){%>
+            <tr>
+              <td><%=room.id%></td>
+              <td><%=room.name%></td>
+              <%if(room.status==0){
+              %>
+              <td><div class="ui blue label">空闲</div></td>
+              <%}else{%>
+              <td class="status"><div class="ui red label">繁忙</div></td>
+              <%}%>
+              <td><%if(room.status==1){
+              %><%=room.begin_time.toLocaleString()%><%}%></td>
+              <td class="timer">
+              </td>
+              <td>
+                <!-- 房间状态是繁忙可以结账,房间状态是空闲可以删除房间 -->
+                <%if(room.status==1){%>
+                  <button class="ui button pay" roomid=<%=room.id%> begin_time="<%=room.begin_time.toLocaleString()%>">结账</button>
+                <%}else{%>
+                  <a class="ui button green" href="/room/put/<%=room.id%>">开房</a>
+                  <button class="ui button red del_room" id=<%=room.id%>>删除房间</button>
+                  <%}%>
+              </td>
+            </tr>
+            <%})%>
+        </tbody>
+      </table>
+    </div>
+    <!--添加模态对话框 -->
+    <div class="ui small modal new">
+      <i class="close icon"></i>
+      <div class="content">
+        <form class="ui form" method="post" action="/room/new">
+          <div class="field">
+            <label>房间名</label>
+            <input type="text" name="name" placeholder="1号房间">
+          </div>
+          <div class="field">
+            <label>房间描述</label>
+            <textarea rows="2" name="des">房间简单描述,可不用填写</textarea>
+          </div>
+          <button class="ui blue button" type="submit">提交</button>
+        </form>
+      </div>
+    </div>
+    <div class="ui small modal del">
+      <div class="content">
+        确定删除该房间信息?删除后不可恢复
+      </div>
+      <div class="actions">
+          <div class="ui negative button">取消</div>
+          <div class="ui positive button">确定</div>
+      </div>
+    </div>
+    <!-- 结账模态窗口 -->
+    <div class="ui small modal pay_modal">
+      <i class="close icon"></i>
+      <div class="content">
+              <div class="ui selection dropdown charge_type">
+                <input type="hidden" name="gender">
+                <i class="dropdown icon"></i>
+                <div class="default text">选择计费方式</div>
+                <div class="menu ">
+                  <div class="item" data-value="1">观看电影次数收费</div>
+                  <div class="item" data-value="0">观看电影时间收费</div>
+                </div>
+                <!-- 无会员结账，会员结账 -->
+              </div>
+              <div class="ui input cishu">
+                <input type="number" placeholder="输入观看电影次数" class="seecishu">
+              </div>
+              <div class="ui right labeled input time">
+                <input type="number" readonly class="seetime">
+                <div class="ui basic label">小时</div>
+              </div>
+              <div class="ui selection dropdown price">
+                <input type="hidden" name="gender" class="hidden_price">
+                <i class="dropdown icon"></i>
+                <div class="default text">选择时间段</div>
+                <div class="menu pricelist">
+                </div>
+              </div>
+              <div class="ui center aligned basic segment pay_select">
+
+                <div class="ui red statistic">
+                  <div class="value">
+                    本次消费:<lable class="totalmount"></label>
+                  </div>
+                  <div class="ui buttons ">
+                      <button class="ui blue button origin_pay">普通结账</button>
+                      <div class="or"></div>
+                      <button class="ui green button vip_pay">会员结账</button>
+                  </div>
+                  <!-- <div class="label">下载 </div> -->
+                </div>
+
+              </div>
+              <div class="ui action input search">
+                  <input type="text" placeholder="输入会员手机号" class="phone">
+                  <button class="ui button search_phone">搜索</button>
+              </div>
+                <table class="ui celled table pay_table">
+                  <thead>
+                    <tr>
+                      <th>手机号</th>
+                      <th>剩余金额</th>
+                      <th>本次消费金额</th>
+                      <th>实收现金</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody class="pay_vip">
+                  </tbody>
+                </table>
+                <div class="ui center aligned basic segment no_vip">
+                  <div class="ui red message">无会员信息!</div>
+                </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      $(function(){
+        $(".time").hide();
+        $(".cishu").hide();
+        $(".price").hide();
+        $(".search").hide();
+        $(".pay_select").hide();
+        $(".pay_table").hide();
+        $(".no_vip").hide();
+        $(".new_room").click(function(){
+          $('.small.modal.new').modal('setting', 'closable', false).modal('show');
+        })
+        $(".del_room").click(function(){
+          var keyword=$(this).attr("id");
+          $('.small.modal.del').modal({
+            closable  : false,
+            onApprove : function(){
+              window.location.href="/room/del/"+keyword;
+            }
+          }).modal('show');
+        })
+        $(".charge_type").dropdown({
+          onChange: function(value,text){
+            if(value==0){
+              //时间方式
+              $(".time").show();
+              $(".cishu").hide();
+            }
+            else{
+              //次数
+              $(".time").hide();
+              $(".cishu").show();
+            }
+            if($(".pricelist>div").length==0){
+              $.ajax({
+                type:'GET',
+                url:'/price/ajax',
+                success:function(data){
+                  var strArray = new Array();
+                  $.each(data,function(index,content){
+                     strArray.push('<div class="item" data-value='+content.price+'>'+content.timearea+'</div>');
+                  })
+                  $(".pricelist").html(String.prototype.concat.apply("", strArray));
+                  $(".price").show();
+                }
+              })
+            }
+          }
+        });
+        $(".price").dropdown({
+          onChange: function(value, text, $selectedItem) {
+
+          }
+        });
+        $(".pay").click(function(){
+            //使用的时间
+            $(".search").hide();
+            $(".pay_select").hide();
+            $(".pay_table").hide();
+            $(".no_vip").hide();
+
+            var time=parseFloat($(this).attr("time"))
+            $(".seetime").val(time)
+            var roomid=$(this).attr("roomid");
+            var begin_time=$(this).attr("begin_time");
+            $(".origin_pay").attr({"roomid":roomid,"begin_time":begin_time});
+            $(".vip_pay").attr({"roomid":roomid,"begin_time":begin_time});
+          $('.small.modal.pay_modal').modal({
+            onApprove : function(){
+            }
+          }).modal('show');
+          })
+          setInterval(function(){
+            //刷新正在计时的房间
+            var current_date=new Date().format("yyyy-MM-dd hh:mm:ss");
+            $(".status").each(function(index){
+              var hour=GetDateDiff($(this).next().text(), current_date, "hour")
+              var minute=GetDateDiff($(this).next().text(), current_date, "minute")%60
+              var second=GetDateDiff($(this).next().text(), current_date, "second")%60
+              $(this).next().next().text(hour+'小时'+minute+'分钟'+second+'秒');
+              var time=minute<=30? (hour+0.5):hour+1
+              $(".pay").eq(index).attr("time",time)
+              if(($(".time").is(":visible")||$(".cishu").is(":visible"))&&($(".hidden_price").val()!="")){
+                //总计
+                $(".pay_select").show();
+                var totalmount;
+                if($(".time").is(":visible")){
+                  totalmount=$(".seetime").val()*$(".hidden_price").val();
+                }
+                else{
+                  totalmount=$(".seecishu").val()*$(".hidden_price").val();
+                }
+                $(".totalmount").text(totalmount);
+              }
+            })
+          },1000)
+          $(".origin_pay").click(function(){
+            var roomid=$(this).attr("roomid");
+            var totalmount=$(".totalmount").text();
+            var begin_time=$(this).attr("begin_time");
+            window.location.href="/room/pay/"+roomid+"?mount="+totalmount+"&begin_time="+begin_time;
+          })
+        $(".vip_pay").click(function(){
+          var roomid=$(this).attr("roomid");
+          var totalmount=$(".totalmount").text();
+          var begin_time=$(this).attr("begin_time");
+          $(".search").show();
+        })
+      $(".search_phone").click(function(){
+        var phone=$(".phone").val().trim();
+        if(phone.length!=0){
+          $.ajax({
+            type:'GET',
+            url:'/vip/'+phone,
+            success:function(data){
+              if(data.length==1){
+                $(".pay_table").show();
+                $(".no_vip").hide();
+                $.each(data,function(index,content){
+                  var jian=$(".totalmount").text()-content.mount;
+                  var cash=jian>=0? jian: 0;
+                  var mm='<tr><td>'+content.phone+'</td><td>'+content.mount+'</td><td>'+$(".totalmount").text()+'</td><td>'+cash+'</td><td><div class="ui button blue final_pay">结账</div></td></tr>';
+                  $(".pay_vip").html(mm);
+                })
+                $(".final_pay").click(function(){
+                  var roomid=$(".vip_pay").attr("roomid");
+                  var begin_time=$(".vip_pay").attr("begin_time");
+                  var totalmount=$(".totalmount").text();
+                  var balance=(totalmount>=data[0].mount)? 0:(data[0].mount-totalmount);
+                  var phone=data[0].phone;
+                  console.log(balance);
+                  window.location.href='/room/pay/'+roomid+'/vip?balance='+balance+'&mount='+totalmount+'&phone='+phone+'&begin_time='+begin_time
+                })
+              }
+              else{
+                $(".pay_table").hide();
+                $(".no_vip").show();
+              }
+            }
+          })}
+        })
+
+      })
+
+    </script>
+  </body>
+</html>
