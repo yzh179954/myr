@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
     })
   }
   //获取记录总数
-  var limit=1;
+  var limit=10;
   var offset= (typeof(req.query.page)!="undefined")? (parseInt(req.query.page)-1)*limit:0;
   var sql='select count(id) as count from vip';
   sqlUtil.getResult(sql,function(result){

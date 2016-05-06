@@ -12,8 +12,8 @@ router.get('/',function(req,res,next){
   var offset= (typeof(req.query.page)!="undefined")? (parseInt(req.query.page)-1)*limit:0;
   var sql='select * from recharge where create_time BETWEEN "'+begin_time+'" and "'+ end_time+'"';
   var phone=null;
-  if(typeof(req.query.phone)!="undefined"&&req.query.phone!=null){
-    sql+='and phone='+req.query.phone;
+  if(typeof(req.query.phone)!="undefined"&&req.query.phone!=null&&req.query.phone!=""){
+    sql+=' and phone='+req.query.phone;
     phone=req.query.phone;
   }
   console.log(sql);
@@ -33,7 +33,7 @@ router.get('/execl',function(req,res,next){
   var end_time=(typeof(req.query.end_time)!="undefined")? req.query.end_time:new Date().toLocaleString();
   var sql='select * from recharge where create_time BETWEEN "'+begin_time+'" and "'+ end_time+'"';
   if(typeof(req.query.phone)!="undefined"){
-    sql+='and phone='+req.query.phone;
+    sql+=' and phone='+req.query.phone;
   }
   sqlUtil.getResult(sql,function(result){
     //构造execl数据
