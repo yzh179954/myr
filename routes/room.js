@@ -29,6 +29,7 @@ router.get('/put/:id',function(req,res,next){
   })
 })
 
+
 //删除房间信息
 router.get('/del/:id',function(req,res,next){
   var sql='delete from room where id='+req.params.id;
