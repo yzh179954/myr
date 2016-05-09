@@ -41,7 +41,7 @@ router.get('/del/:id',function(req,res,next){
 //普通结账
 router.get('/pay/:id',function(req,res,next){
   // 更新房间状态信息
- var sql='update room set status=0,begin_time=" " where id='+req.params.id;
+ var sql='update room set status=0,begin_time=null where id='+req.params.id;
  sqlUtil.getResult(sql,function(result){
   //  插入一条记录
    var mount=req.query.mount;
@@ -57,7 +57,7 @@ router.get('/pay/:id',function(req,res,next){
 
 //会员结账
 router.get('/pay/:id/vip',function(req,res,next){
-  var sql='update room set status=0,begin_time=" " where id='+req.params.id;
+  var sql='update room set status=0,begin_time=null where id='+req.params.id;
   sqlUtil.getResult(sql,function(result){
     //会员余额扣款
     var mount=req.query.balance;
