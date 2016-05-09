@@ -144,7 +144,7 @@
                 </div>
 
               </div>
-              <div class="ui action input search">
+              <div class="ui action input search_vip">
                   <input type="text" placeholder="输入会员手机号" class="phone">
                   <button class="ui button search_phone">搜索</button>
               </div>
@@ -171,7 +171,7 @@
         $(".time").hide();
         $(".cishu").hide();
         $(".price").hide();
-        $(".search").hide();
+        $(".search_vip").hide();
         $(".pay_select").hide();
         $(".pay_table").hide();
         $(".no_vip").hide();
@@ -222,7 +222,7 @@
         });
         $(".pay").click(function(){
             //使用的时间
-            $(".search").hide();
+            $(".search_vip").hide();
             $(".pay_select").hide();
             $(".pay_table").hide();
             $(".no_vip").hide();
@@ -272,7 +272,7 @@
           var roomid=$(this).attr("roomid");
           var totalmount=$(".totalmount").text();
           var begin_time=$(this).attr("begin_time");
-          $(".search").show();
+          $(".search_vip").show();
         })
       $(".search_phone").click(function(){
         var phone=$(".phone").val().trim();
